@@ -110,12 +110,26 @@
 
     <xsl:variable name="defaultObjectState" select="'Active'"/>
     <xsl:variable name="defaultObjectOwner" select="'fedoraAdmin'"/>
-    
-    <xsl:param name="collectioncode"/>
-    <xsl:param name="windowsDrivePath"/>
-    <xsl:param name="ingestBase"
-        select="concat($windowsDrivePath,'/srv/fedora-working/ingest/',upper-case($collectioncode),'/')"/>
 
+    <xsl:variable name="fileURIPrefix" select="'file://'"/>
+
+    <xsl:variable name="pdfExtension" select="'.pdf'"/>
+    <xsl:variable name="pdfMimetype" select="'application/pdf'"/>
+    <xsl:variable name="xlsExtension" select="'.xls'"/>
+    <xsl:variable name="xlsMimetype" select="'application/vnd.ms-excel'"/>
+    <xsl:variable name="xlsxExtension" select="'.xlsx'"/>
+    <xsl:variable name="xlsxMimetype"
+        select="'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'"/>
+    <xsl:variable name="xmlExtension" select="'.xml'"/>
+    <xsl:variable name="xmlMimetype" select="'text/xml'"/>
+
+    <!-- 
+        <xsl:param name="collectioncode"/>
+        <xsl:param name="windowsDrivePath"/>
+        <xsl:param name="ingestBase"
+        select="concat($windowsDrivePath,'/srv/fedora-working/ingest/',upper-case($collectioncode),'/')"/>
+        
+        
     <xsl:param name="haveChecksum" select="true()"/>
     <xsl:param name="checksumFilename" select="'checksums.xml'"/>
     <xsl:param name="haveContent" select="true()"/>
@@ -135,17 +149,6 @@
     <xsl:param name="autoParentIdLength"/>
     <xsl:param name="parentId"/>
 
-    <xsl:variable name="fileURIPrefix" select="'file://'"/>
-
-    <xsl:variable name="pdfExtension" select="'.pdf'"/>
-    <xsl:variable name="pdfMimetype" select="'application/pdf'"/>
-    <xsl:variable name="xlsExtension" select="'.xls'"/>
-    <xsl:variable name="xlsMimetype" select="'application/vnd.ms-excel'"/>
-    <xsl:variable name="xlsxExtension" select="'.xlsx'"/>
-    <xsl:variable name="xlsxMimetype"
-        select="'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'"/>
-    <xsl:variable name="xmlExtension" select="'.xml'"/>
-    <xsl:variable name="xmlMimetype" select="'text/xml'"/>
 
     <xsl:variable name="collectionPathPart" select="'collection/'"/>
     <xsl:variable name="itemPathPart" select="'item/'"/>
@@ -307,5 +310,5 @@
     <xsl:variable name="targetMasterPathURI" select="concat($fileURIPrefix,$targetMasterPath)"/>
     <xsl:variable name="targetModifyPathURI" select="concat($fileURIPrefix,$targetModifyPath)"/>
     <xsl:variable name="targetModsPathURI" select="concat($fileURIPrefix,$targetModsPath)"/>
-
+-->
 </xsl:stylesheet>
