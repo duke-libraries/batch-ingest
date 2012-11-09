@@ -108,7 +108,21 @@
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
 
-    <xsl:variable name="defaultObjectState" select="'Active'"/>
+    <xsl:variable name="externalControlGroupType" select="'E'"/>
+    <xsl:variable name="inlineControlGroupType" select="'X'"/>
+    <xsl:variable name="managedControlGroupType" select="'M'"/>
+    <xsl:variable name="redirectControlGroupType" select="'R'"/>
+    <xsl:variable name="activeState" select="'A'"/>
+    <xsl:variable name="deletedState" select="'D'"/>
+    <xsl:variable name="inactiveState" select="'I'"/>
+    <xsl:variable name="md5ChecksumType" select="'MD5'"/>
+    <xsl:variable name="sha1ChecksumType" select="'SHA-1'"/>
+    <xsl:variable name="sha256ChecksumType" select="'SHA-256'"/>
+    <xsl:variable name="sha384ChecksumType" select="'SHA-384'"/>
+    <xsl:variable name="sha512ChecksumType" select="'SHA-512'"/>
+    <xsl:variable name="disabledChecksumType" select="'DISABLED'"/>
+    
+    <xsl:variable name="defaultObjectState" select="$activeState"/>
     <xsl:variable name="defaultObjectOwner" select="'fedoraAdmin'"/>
 
     <xsl:variable name="fileURIPrefix" select="'file://'"/>
