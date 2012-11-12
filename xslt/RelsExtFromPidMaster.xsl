@@ -11,6 +11,7 @@
     <xsl:param name="relationshiptoparent"/>
     <xsl:param name="contentModels"/>
     <xsl:param name="contentModelsDelimiter" select="';'"/>
+    <xsl:param name="adminPolicy"/>
     
     <xsl:variable name="parentPidMaster" select="document($parentpidmasterfile)"/>        
 
@@ -60,10 +61,15 @@
                     <rdf:Description>
                         <xsl:attribute name="rdf:about" select="concat($fedorauriprefix,$pid)"/>
                         <xsl:for-each select="tokenize($contentModels,$contentModelsDelimiter)">
-                            <fedora-model:hasModel xmlns:fedora-model="info:fedora/fedora-system:def/model#">
+                            <xsl:element name="hasModel" namespace="info:fedora/fedora-system:def/model#">
                                 <xsl:attribute name="rdf:resource" select="concat($fedorauriprefix,.)"/>
-                            </fedora-model:hasModel>
+                            </xsl:element>
                         </xsl:for-each>
+                        <xsl:if test="$adminPolicy!=''">
+                            <xsl:element name="isGovernedBy" namespace="http://projecthydra.org/ns/relations#">
+                                <xsl:attribute name="rdf:resource" select="concat($fedorauriprefix,$adminPolicy)"/>
+                            </xsl:element>
+                        </xsl:if>
                         <xsl:if test="$parentPid!=''">
                             <xsl:element name="{$relationshiptoparent}" 
                                 namespace="info:fedora/fedora-system:def/relations-external#">
