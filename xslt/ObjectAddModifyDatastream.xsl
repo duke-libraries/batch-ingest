@@ -31,7 +31,7 @@
     <xsl:variable name="defaultDsMimeType" select="$xmlMimetype"/>
     <xsl:variable name="defaultDsControlGroupType" select="$managedControlGroupType"/>
     <xsl:variable name="defaultDsState" select="$activeState"/>
-    <xsl:variable name="defaultDsVersionable" select="true"/>
+    <xsl:variable name="defaultDsVersionable" select="true()"/>
     <xsl:variable name="defaultDsChecksumType" select="$sha256ChecksumType"/>
     
     <xsl:variable name="addDatastreamElement" select="'fbm:addDatastream'"/>
@@ -49,6 +49,16 @@
     </xsl:template>
     
     <xsl:template match="object">
+        <xsl:variable name="pidToUse">
+            <xsl:choose>
+                <xsl:when test="$pid != ''">
+                    <xsl:value-of select="$pid"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="pid"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         <xsl:variable name="dsFilename">
             <xsl:choose>
                 <xsl:when test="$dsFilenameElement = ''">
@@ -88,6 +98,7 @@
                 <xsl:element name="{$addDatastreamElement}">
                     <xsl:call-template name="constructDatastream">
                         <xsl:with-param name="object" select="."/>
+                        <xsl:with-param name="pidToUse" select="$pidToUse"/>
                         <xsl:with-param name="dsLocationURI" select="$dsLocationURI"/>
                         <xsl:with-param name="dsMimeTypeToUse" select="$dsMimeTypeToUse"/>
                         <xsl:with-param name="dsControlGroupTypeToUse">
@@ -137,6 +148,7 @@
                 <xsl:element name="{$modifyDatastreamElement}">
                     <xsl:call-template name="constructDatastream">
                         <xsl:with-param name="object" select="."/>
+                        <xsl:with-param name="pidToUse" select="$pidToUse"/>
                         <xsl:with-param name="dsLocationURI" select="$dsLocationURI"/>
                         <xsl:with-param name="dsMimeTypeToUse" select="$dsMimeTypeToUse"/>
                         <xsl:with-param name="dsControlGroupTypeToUse" select="$dsControlGroupType"/>
@@ -151,13 +163,14 @@
     
     <xsl:template name="constructDatastream">
         <xsl:param name="object"/>
+        <xsl:param name="pidToUse"/>
         <xsl:param name="dsLocationURI"/>
         <xsl:param name="dsMimeTypeToUse"/>
         <xsl:param name="dsControlGroupTypeToUse"/>
         <xsl:param name="dsStateToUse"/>
         <xsl:param name="dsVersionableToUse"/>
         <xsl:param name="dsChecksumTypeToUse"/>
-        <xsl:attribute name="pid" select="$pid"/>
+        <xsl:attribute name="pid" select="$pidToUse"/>
         <xsl:attribute name="dsID" select="$dsId"/>
         <xsl:if test="$dsLabel != ''">
             <xsl:attribute name="dsLabel" select="$dsLabel"/>            
