@@ -4,7 +4,7 @@ source /srv/fedora-working/ingest/bin/fedoraconnect.sh
         ${FEDORA_HOST}:$FEDORA_PORT \
         $FEDORA_USERNAME \
         $FEDORA_PASSWORD \
-        /srv/fedora-working/ingest/VIC/collection/modify/modify.xml \
-        /srv/fedora-working/ingest/VIC/logs/modify-collection.log \
+        /srv/fedora-working/ingest/VIC/collection/modify/addRelsExtDS.xml \
+        /srv/fedora-working/ingest/VIC/logs/modify-collection-addRelsExtDS.log \
 	$FEDORA_SCHEME \
         execute
