@@ -4,7 +4,7 @@ source /srv/fedora-working/ingest/bin/fedoraconnect.sh
         ${FEDORA_HOST}:$FEDORA_PORT \
         $FEDORA_USERNAME \
         $FEDORA_PASSWORD \
-        /srv/fedora-working/ingest/VIC/item/modify/modify.xml \
-        /srv/fedora-working/ingest/VIC/logs/modify-item.log \
+        /srv/fedora-working/ingest/VIC/item/modify/addMarcXMLDS.xml \
+        /srv/fedora-working/ingest/VIC/logs/modify-item-addMarcXMLDS.log \
 	$FEDORA_SCHEME \
         execute
