@@ -4,7 +4,10 @@
     xmlns:jhove="http://hul.harvard.edu/ois/xml/ns/jhove" exclude-result-prefixes="jhove">
     <xsl:include href="Common.xsl"/>
     <xsl:output method="xml" indent="yes"/>
-    <xsl:strip-space elements="*" />
+    <xsl:strip-space elements="*"/>
+    <xsl:param name="jhoveFilePath"/>
+    <xsl:param name="model"/>
+    <xsl:variable name="modelURI" select="concat($fedoraURIPrefix,$model)"/>
     <xsl:template match="/">
         <xsl:apply-templates/>
     </xsl:template>
@@ -21,7 +24,7 @@
         <xsl:if
             test="(substring-after($sourceFilename, '.') = 'tif') or (substring-after($sourceFilename, '.') = 'pdf')">
             <xsl:variable name="jhoveFilename" select="concat($sourceFilename,$xmlExtension)"/>
-            <xsl:variable name="jhoveFileURI" select="concat($componentJhovePathURI,$jhoveFilename)"/>
+            <xsl:variable name="jhoveFileURI" select="concat($fileURIPrefix,$jhoveFilePath,$jhoveFilename)"/>
             <xsl:result-document href="{$jhoveFileURI}">
                 <jhove xmlns="http://hul.harvard.edu/ois/xml/ns/jhove">
                     <xsl:for-each select="./parent::*/@*">
@@ -37,6 +40,7 @@
                 <xsl:value-of select="substring-before($sourceFilename, '.')"/>
             </xsl:variable>
             <object>
+                <xsl:attribute name="model" select="$modelURI"/>
                 <identifier>
                     <xsl:value-of select="$objectId"/>
                 </identifier>

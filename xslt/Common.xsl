@@ -125,6 +125,7 @@
     <xsl:variable name="defaultObjectState" select="$activeState"/>
     <xsl:variable name="defaultObjectOwner" select="'fedoraAdmin'"/>
 
+    <xsl:variable name="fedoraURIPrefix" select="'info:fedora/'"/>
     <xsl:variable name="fileURIPrefix" select="'file://'"/>
 
     <xsl:variable name="pdfExtension" select="'.pdf'"/>
