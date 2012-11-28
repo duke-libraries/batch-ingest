@@ -7,19 +7,31 @@
     <xsl:strip-space elements="*"/>
     <xsl:param name="jhoveFilePath"/>
     <xsl:param name="model"/>
+    <xsl:param name="parentId"/>
+    <xsl:param name="autoParentId"/>
+    <xsl:param name="autoParentIdLength"/>
+    <xsl:param name="haveChecksum"/>
+    <xsl:param name="checksumFilePath"/>
     <xsl:variable name="modelURI" select="concat($fedoraURIPrefix,$model)"/>
     <xsl:template match="/">
-        <xsl:apply-templates/>
+        <xsl:apply-templates/>        
     </xsl:template>
     <xsl:template match="jhove:jhove">
+        <xsl:variable name="checksums">
+            <xsl:if test="$haveChecksum">
+                <xsl:copy-of select="document(concat($fileURIPrefix,$checksumFilePath))"/>
+            </xsl:if>
+        </xsl:variable>
         <objects>
             <xsl:apply-templates>
                 <xsl:with-param name="dateNode" select="jhove:date"/>
+                <xsl:with-param name="checksums" select="$checksums"/>
             </xsl:apply-templates>
         </objects>
     </xsl:template>
     <xsl:template match="jhove:repInfo">
         <xsl:param name="dateNode"/>
+        <xsl:param name="checksums"/>
         <xsl:variable name="sourceFilename" select="tokenize(@uri, '/')[last()]"/>
         <xsl:if
             test="(substring-after($sourceFilename, '.') = 'tif') or (substring-after($sourceFilename, '.') = 'pdf')">
@@ -53,6 +65,31 @@
                 <mimetype>
                     <xsl:value-of select="jhove:mimeType"/>
                 </mimetype>
+                <xsl:if test="$parentId or $autoParentId">
+                    <parentid>
+                        <xsl:choose>
+                            <xsl:when test="$parentId">
+                                <xsl:value-of select="$parentId"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of
+                                    select="substring($objectId,1,number($autoParentIdLength))"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </parentid>
+                </xsl:if>
+                <xsl:if test="$haveChecksum">
+                    <checksum source="dpc">
+                        <type>
+                            <xsl:value-of
+                                select="$checksums/checksums/checksum[componentid=$objectId]/type"/>
+                        </type>
+                        <value>
+                            <xsl:value-of
+                                select="$checksums/checksums/checksum[componentid=$objectId]/value"/>
+                        </value>
+                    </checksum>
+                </xsl:if>
             </object>
         </xsl:if>
     </xsl:template>

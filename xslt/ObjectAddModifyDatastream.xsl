@@ -14,6 +14,7 @@
     
     <xsl:param name="dsLocationPath"/>
     <xsl:param name="dsFilenameElement"/>
+    <xsl:param name="dsFilenameExtension"/>
     
     <xsl:param name="pid"/>
     <xsl:param name="dsId"/>
@@ -28,6 +29,7 @@
     <xsl:param name="dsChecksum"/>
     <xsl:param name="logMessage"/>
 
+    <xsl:variable name="defaultDsFilenameExtension" select="$xmlExtension"/>
     <xsl:variable name="defaultDsMimeType" select="$xmlMimetype"/>
     <xsl:variable name="defaultDsControlGroupType" select="$managedControlGroupType"/>
     <xsl:variable name="defaultDsState" select="$activeState"/>
@@ -59,10 +61,20 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
+        <xsl:variable name="extensionToUse">
+            <xsl:choose>
+                <xsl:when test="$dsFilenameExtension != ''">
+                    <xsl:value-of select="$dsFilenameExtension"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="$defaultDsFilenameExtension"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         <xsl:variable name="dsFilename">
             <xsl:choose>
                 <xsl:when test="$dsFilenameElement = ''">
-                    <xsl:value-of select="concat(identifier,$xmlExtension)"/>
+                    <xsl:value-of select="concat(identifier,$extensionToUse)"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of select="./*[name()=$dsFilenameElement]"/>
@@ -79,6 +91,9 @@
                     <xsl:choose>
                         <xsl:when test="ends-with($dsLocationURI,$pdfExtension)">
                             <xsl:value-of select="$pdfMimetype"/>
+                        </xsl:when>
+                        <xsl:when test="ends-with($dsLocationURI,$tifExtension)">
+                            <xsl:value-of select="$tifMimetype"/>
                         </xsl:when>
                         <xsl:when test="ends-with($dsLocationURI,$xlsExtension)">
                             <xsl:value-of select="$xlsMimetype"/>

@@ -5,7 +5,7 @@ source /srv/fedora-working/ingest/bin/fedoraconnect.sh
         /srv/fedora-working/ingest/VIC/logs/ingest-component.log \
 	xml \
         info:fedora/fedora-system:FOXML-1.1 \
-        $(FEDORA_HOST}:$FEDORA_PORT \
+        ${FEDORA_HOST}:$FEDORA_PORT \
         $FEDORA_USERNAME \
         $FEDORA_PASSWORD \
         $FEDORA_SCHEME \

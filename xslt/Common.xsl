@@ -130,6 +130,8 @@
 
     <xsl:variable name="pdfExtension" select="'.pdf'"/>
     <xsl:variable name="pdfMimetype" select="'application/pdf'"/>
+    <xsl:variable name="tifExtension" select="'.tif'"/>
+    <xsl:variable name="tifMimetype" select="'image/tiff'"/>
     <xsl:variable name="xlsExtension" select="'.xls'"/>
     <xsl:variable name="xlsMimetype" select="'application/vnd.ms-excel'"/>
     <xsl:variable name="xlsxExtension" select="'.xlsx'"/>
