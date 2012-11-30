@@ -1,0 +1,12 @@
+./110itemqdccreate.sh
+./120itemfoxmlcreate.sh
+./130ingestitem.sh
+./140addpidstoitemmaster.sh
+./150itemaddrelsext.sh
+./151itemaddmarcxml.sh
+./152itemadddescmetadata.sh
+./153itemaddtripodmets.sh
+./160modifyitemrelsext.sh
+./161modifyitemmarcxml.sh
+./162modifyitemdescmetadata.sh
+./163modifyitemtripodmets.sh

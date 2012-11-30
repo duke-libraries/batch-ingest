@@ -1,0 +1,16 @@
+./010collectionqdccreate.sh
+./020collectionfoxmlcreate.sh
+./030ingestcollection.sh
+./040addpidstocollectionmaster.sh
+./050collectionaddrelsext.sh
+./051collectionadddigitizationguide.sh
+./052collectionaddfmpexport.sh
+./053collectionaddmarcxml.sh
+./054collectionadddescmetadata.sh
+./055collectionaddtripodmets.sh
+./060modifycollectionrelsext.sh
+./061modifycollectiondigitizationguide.sh
+./062modifycollectionfmpexport.sh
+./063modifycollectionmarcxml.sh
+./064modifycollectiondescmetadata.sh
+./065modifycollectiontripodmets.sh
