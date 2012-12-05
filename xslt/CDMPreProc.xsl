@@ -6,6 +6,13 @@
     
     <xsl:output encoding="UTF-8" indent="yes" method="xml"/>
     
+    <xsl:param name="basepath"/>
+    <xsl:param name="collectionmodel"/>
+    <xsl:param name="itemmodel"/>
+    <xsl:variable name="basePathURI" select="concat($fileURIPrefix,$basepath)"/>
+    <xsl:variable name="collectionModelURI" select="concat($fedoraURIPrefix,$collectionmodel)"/>
+    <xsl:variable name="itemModelURI" select="concat($fedoraURIPrefix,$itemmodel)"/>
+    
     <xsl:template match="/">
         <xsl:call-template name="processCdmCollectionNodes">
             <xsl:with-param name="records" select="metadata/record[Type = 'Collection']"/>
@@ -17,20 +24,21 @@
     
     <xsl:template name="processCdmCollectionNodes">
         <xsl:param name="records"/>
-        <xsl:variable name="enumerationFileURI" select="concat($collectionEnumerationPathURI,'collection',$xmlExtension)"/>
-        <xsl:result-document href="{$enumerationFileURI}">
+        <xsl:variable name="masterFileURI" select="concat($basePathURI,'collection/master/master',$xmlExtension)"/>
+        <xsl:result-document href="{$masterFileURI}">
             <objects>
             <xsl:for-each select="$records">
                 <object>
+                    <xsl:attribute name="model" select="$collectionModelURI"/>
                     <identifier><xsl:value-of select="localid"/></identifier>
                 </object>
                 <xsl:call-template name="writeContentdmDoc">
                     <xsl:with-param name="record" select="."/>
-                    <xsl:with-param name="contentdmFileURI" select="concat($collectionContentdmPathURI,localid,$xmlExtension)"/>
+                    <xsl:with-param name="contentdmFileURI" select="concat($basePathURI,'collection/contentdm/',localid,$xmlExtension)"/>
                 </xsl:call-template>
-                <xsl:call-template name="writeModsDoc">
+                <xsl:call-template name="writeQDCDoc">
                     <xsl:with-param name="record" select="."/>
-                    <xsl:with-param name="modsFileURI" select="concat($collectionModsPathURI,localid,$xmlExtension)"/>
+                    <xsl:with-param name="qdcFileURI" select="concat($basePathURI,'collection/qdc/',localid,$xmlExtension)"/>
                 </xsl:call-template>
             </xsl:for-each>
             </objects>            
@@ -39,20 +47,21 @@
 
     <xsl:template name="processCdmItemNodes">
         <xsl:param name="records"/>
-        <xsl:variable name="enumerationFileURI" select="concat($itemEnumerationPathURI,'items',$xmlExtension)"/>
-        <xsl:result-document href="{$enumerationFileURI}">
+        <xsl:variable name="masterFileURI" select="concat($basePathURI,'item/master/master',$xmlExtension)"/>
+        <xsl:result-document href="{$masterFileURI}">
             <objects>
                 <xsl:for-each select="$records">
                     <object>
+                        <xsl:attribute name="model" select="$itemModelURI"/>
                         <identifier><xsl:value-of select="localid"/></identifier>
                     </object>
                     <xsl:call-template name="writeContentdmDoc">
                         <xsl:with-param name="record" select="."/>
-                        <xsl:with-param name="contentdmFileURI" select="concat($itemContentdmPathURI,localid,$xmlExtension)"/>
+                        <xsl:with-param name="contentdmFileURI" select="concat($basePathURI,'item/contentdm/',localid,$xmlExtension)"/>
                     </xsl:call-template>
-                    <xsl:call-template name="writeModsDoc">
+                    <xsl:call-template name="writeQDCDoc">
                         <xsl:with-param name="record" select="."/>
-                        <xsl:with-param name="modsFileURI" select="concat($itemModsPathURI,localid,$xmlExtension)"/>
+                        <xsl:with-param name="qdcFileURI" select="concat($basePathURI,'item/qdc/',localid,$xmlExtension)"/>
                     </xsl:call-template>
                 </xsl:for-each>
             </objects>            
@@ -67,68 +76,44 @@
         </xsl:result-document>        
     </xsl:template>
     
-    <xsl:template name="writeModsDoc">
+    <xsl:template name="writeQDCDoc">
         <xsl:param name="record"/>
-        <xsl:param name="modsFileURI"/>
-        <xsl:result-document href="{$modsFileURI}">
-            <mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.4" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd">
-                <titleInfo>
-                    <title><xsl:value-of select="$record/Title"/></title>
-                </titleInfo>
+        <xsl:param name="qdcFileURI"/>
+        <xsl:result-document href="{$qdcFileURI}">
+            <dc xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                <dcterms:title><xsl:value-of select="$record/Title"/></dcterms:title>
                 <xsl:for-each select="$record/Subject">
                     <xsl:if test=".!=''">
-                    <subject>
-                        <topic><xsl:value-of select="."/></topic>
-                    </subject>
+                        <dcterms:subject><xsl:value-of select="."/></dcterms:subject>
                     </xsl:if>
                 </xsl:for-each>
                 <xsl:for-each select="$record/Description">
                     <xsl:if test=".!=''">
-                        <note type="content"><xsl:value-of select="."/></note>
+                        <dcterms:description><xsl:value-of select="."/></dcterms:description>
                     </xsl:if>
                 </xsl:for-each>
                 <xsl:for-each select="$record/Creator">
                     <xsl:if test=".!=''">
-                        <name>
-                            <namePart><xsl:value-of select="."/></namePart>
-                            <role>
-                                <roleTerm type="text">creator</roleTerm>
-                            </role>
-                        </name>
+                        <dcterms:creator><xsl:value-of select="."/></dcterms:creator>
                     </xsl:if>
                 </xsl:for-each>
                 <xsl:for-each select="$record/Date">
                     <xsl:if test=".!=''">
-                        <originInfo>
-                            <dateCreated><xsl:value-of select="."/></dateCreated>
-                        </originInfo>
+                        <dcterms:date><xsl:value-of select="."/></dcterms:date>
                     </xsl:if>
                 </xsl:for-each>
                 <xsl:for-each select="$record/Type">
                     <xsl:if test=".!=''">
-                        <note><xsl:value-of select="."/></note>
+                        <dcterms:type><xsl:value-of select="."/></dcterms:type>
                     </xsl:if>
                 </xsl:for-each>
                 <xsl:for-each select="$record/localid">
                     <xsl:if test=".!=''">
-                        <identifier type="local"><xsl:value-of select="."/></identifier>
+                        <dcterms:identifier><xsl:value-of select="."/></dcterms:identifier>
                     </xsl:if>
                 </xsl:for-each>
-            </mods>
+            </dc>
         </xsl:result-document>
-        <!-- 
-            Title -> titleInfo/title
-            Subject -> subject/topic
-            Description -> note(@type=content?)
-            Creator -> name/namePart and name/role/roleTerm(@type=text)creator
-            Date -> originInfo/dateCreated(@keyDate=yes?)
-            Type -> note(@type=?)
-            localid -> identifier(@type=local)
-            Print_Number ->
-            Box_Number ->
-            Source_Collection ->
-            collection ->
-        -->
-    </xsl:template>
+   </xsl:template>
     
 </xsl:stylesheet>
