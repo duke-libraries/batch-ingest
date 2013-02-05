@@ -3,6 +3,8 @@ batch-ingest
 
 Scripts and XSLT stylesheets for batch ingesting digital collections objects into Fedora
 
+NOTE: This project has been largely superceded by batch ingest functionality within the dul-hydra project.
+
 License
 -------
 
